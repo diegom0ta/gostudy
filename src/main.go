@@ -81,14 +81,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Container list
-	var latestContainers = 1
-	containerLatestList, err := containers.List(connText, nil, nil, &latestContainers, nil, nil, nil)
+	//List images
+	imageSummary, err = images.List(connText, nil, nil)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	fmt.Printf("Latest container is %s\n", containerLatestList[0].Names[0])
+
+	for _, i := range imageSummary {
+		names = append(names, i.RepoTags...)
+	}
+	fmt.Println("Listing images...")
+	fmt.Println(names)
 
 	// Container stop
 	fmt.Println("Stopping the container...")
